@@ -1,0 +1,98 @@
+<div class="indexNav bg-black dk full-height">
+    <div id="index-menu">
+        <!--logo-->
+        <div class="header-logo bg-info">
+            <a href="#" class="navbar-brand text-lt entire-logo">
+                <i class="icon-diamond"></i>
+                <span class="hidden-nav-xs m-l-sm">单位文件管理系统</span>
+            </a>
+            <a href="#" class="logo-element text-center">
+                <i class="icon-diamond"></i>
+            </a>
+        </div>
+        <!--导航-->
+        <section>
+            <nav class="nav-primary hidden-xs" id="index-nav">
+                #if(user.role_id == 3L)
+                <ul class="nav" data-ride="collapse">
+                    <li id="li1">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/userIndex">
+                            <span class="pull-right text-muted">
+                            </span>
+                            <i class="glyphicon glyphicon-home"></i>
+                            <span class="font-bold">首页</span>
+                        </a>
+                    </li>
+                    <li id="li2">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/document/userDocumentView">
+                            <span class="pull-right text-muted">
+                            </span>
+                            <i class="glyphicon glyphicon-envelope"></i>
+                            <span class="font-bold">文档列表</span>
+                        </a>
+                    </li>
+
+                    <li id="li3">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/request/userRequestView">
+                            <span class="pull-right text-muted">
+
+                            </span>
+                            <i class="glyphicon glyphicon-folder-open"></i>
+                            <span class="font-bold">申请记录</span>
+                        </a>
+                    </li>
+                </ul>
+                #else
+                <ul class="nav" data-ride="collapse">
+                    <li id="li1">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/adminIndex">
+                            <span class="pull-right text-muted">
+                            </span>
+                            <i class="glyphicon glyphicon-home"></i>
+                            <span class="font-bold">首页</span>
+                        </a>
+                    </li>
+                    <li id="li2">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/document">
+                            <span class="pull-right text-muted">
+                            </span>
+                            <i class="glyphicon glyphicon-envelope"></i>
+                            <span class="font-bold">文档管理</span>
+                        </a>
+                    </li>
+
+                    <li id="li3">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/request">
+                            <span class="pull-right text-muted">
+
+                            </span>
+                            <i class="glyphicon glyphicon-folder-open"></i>
+                            <span class="font-bold">申请管理</span>
+                        </a>
+                    </li>
+
+                    <li id="li4">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/user">
+                            <span class="pull-right text-muted">
+                            </span>
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span class="font-bold">用户管理</span>
+                        </a>
+                    </li>
+
+
+                    <li id="li5">
+                        <a href="javascript:void(0);" class="menuItem" data-url="/department">
+                            <span class="pull-right text-muted">
+
+                            </span>
+                            <i class="glyphicon glyphicon-asterisk"></i>
+                            <span class="font-bold">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+                #end
+            </nav>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,4 @@
+2020-12-03 16:20:42.307 [http-nio-8088-exec-3] INFO  admin - 之前执行
+2020-12-03 16:20:42.310 [http-nio-8088-exec-3] INFO  admin - 即将执行方法为: test，属于com.example.sbdemo.controller.TestController包
+2020-12-03 16:20:42.311 [http-nio-8088-exec-3] INFO  admin - 用户请求的url为：http://localhost:8088/test，ip地址为：0:0:0:0:0:0:0:1
+2020-12-03 16:20:42.316 [http-nio-8088-exec-3] INFO  admin - 1111

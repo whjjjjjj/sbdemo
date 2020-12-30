@@ -1,0 +1,119 @@
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <br><br>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="background-color: #f2f4f8">
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="flot-bar-chart"></div>
+                    </div>
+                </div>
+                <div style="text-align: center">
+                    <span>文件按月统计</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="background-color: #f2f4f8">
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="flot-line-chart"></div>
+                    </div>
+                </div>
+                <div style="text-align: center">
+                    <span>阅读数按月统计</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="background-color: #f2f4f8">
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="flot-pie-chart" style="width: 448px"></div>
+                    </div>
+                </div>
+                <div style="text-align: center">
+                    <span>文件按阅读数统计，前十个</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="background-color: #f2f4f8">
+                    <div class="flot-chart">
+                        <div id="morris-donut-chart" style="height: 200px"></div>
+                    </div>
+                </div>
+                <div style="text-align: center">
+                    <span>文件类型统计</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/framework/js/plugins/flot/jquery.flot.js"></script>
+<script src="/framework/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="/framework/js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="/framework/js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="/framework/js/plugins/morris/raphael-2.1.0.min.js"></script>
+<script src="/framework/js/plugins/morris/morris.js"></script>
+<script src="/framework/js/plugins/treeview/bootstrap-treeview.js"></script>
+<script src="/framework/js/content.min.js?v=1.0.0"></script>
+<script src="/framework/js/stats.js"></script>
+<script>
+
+    $(function () {
+        var data = #(one.get(0));
+        var e = {
+            series: {bars: {show: !0, barWidth: .6, fill: !0, fillColor: {colors: [{opacity: .8}, {opacity: .8}]}}},
+            xaxis: {tickDecimals: 0},
+            colors: ["#1ab394"],
+            grid: {color: "#999999", hoverable: !0, clickable: !0, tickColor: "#D4D4D4", borderWidth: 0},
+            legend: {show: !1},
+            tooltip: !0,
+            tooltipOpts: {content: "%x月: %y次"}
+        }, o = data;
+        $.plot($("#flot-bar-chart"), [o], e)
+    }), $(function () {
+        var data = #(one.get(1));
+        var e = {
+            series: {lines: {show: !0, lineWidth: 2, fill: !0, fillColor: {colors: [{opacity: 0}, {opacity: 0}]}}},
+            xaxis: {tickDecimals: 0},
+            colors: ["#1ab394"],
+            grid: {color: "#999999", hoverable: !0, clickable: !0, tickColor: "#D4D4D4", borderWidth: 0},
+            legend: {show: !1},
+            tooltip: !0,
+            tooltipOpts: {content: "x: %x, y: %y"}
+        }, o = data;
+        $.plot($("#flot-line-chart"), [o], e)
+    }), $(function () {
+        var data = #(three);
+        {
+            var e = data;
+            $.plot($("#flot-pie-chart"), e, {
+                series: {pie: {show: !0}},
+                grid: {hoverable: !0},
+                tooltip: !0,
+                tooltipOpts: {content: "%p.0%, %s", shifts: {x: 20, y: 0}, defaultTheme: !1}
+            })
+        }
+    }), $(function() {
+        var data = #(four);
+        Morris.Donut({
+            element: "morris-donut-chart",
+            data: data,
+            resize: !0,
+            colors: ["#87d6c6", "#54cdb4", "#1ab394"]
+        })
+    });
+
+
+</script>
+

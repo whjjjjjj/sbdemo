@@ -1,0 +1,116 @@
+<!--树新增修改"数据字典"弹框begin-->
+<div class="modal fade" id="tree_mod_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="close-modal-icon"></i>
+                </button>
+                <h5 class="modal-title">部门</h5>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">部门名称：</label>
+                        <div class="col-sm-5 no-padder">
+                            <input class="form-control input-sm" type="text" id="dictionary_mod_name"/>
+                            <input type="hidden" id="dictionary_mod_department_id"/>
+                            <input type="hidden" id="dictionary_mod_level">
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">部门代码：</label>
+                        <div class="col-sm-5 no-padder">
+                            <input class="form-control input-sm" type="text" id="dictionary_mod_code"/>
+                            <input type="hidden" id="dictionary_mod_oldDepartmentCode">
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">父级部门代码：</label>
+                        <div class="col-sm-5 no-padder">
+                            <input class="form-control input-sm" type="text" id="dictionary_mod_father_code" readonly="readonly"/>
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">其他描述：</label>
+                        <div class="col-sm-5 no-padder">
+                            <input class="form-control input-sm" type="text" id="dictionary_mod_other"/>
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" onclick="toModDictionaryTree()">确认</button>
+                <button type="button" class="btn btn-outline-info m-r-md" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--树新增修改"数据字典"弹框end-->
+
+<script>
+
+    /**
+     * 树新增/修改部门
+     */
+    function toModDictionaryTree() {
+        var departmentId = $('#dictionary_mod_department_id').val();
+        var departmentCode = $('#dictionary_mod_code').val();
+        var departmentName = $('#dictionary_mod_name').val();
+        var parentCode = $('#dictionary_mod_father_code').val();
+        var describe = $('#dictionary_mod_other').val();
+        var level = $('#dictionary_mod_level').val();
+        var oldDepartmentCode = $('#dictionary_mod_oldDepartmentCode').val();
+        console.log(departmentId)
+        if (departmentId == '') {
+            $.post("/department/addDepartment",
+                {
+                    departmentCode: departmentCode,
+                    departmentName: departmentName,
+                    parentCode: parentCode,
+                    describe: describe,
+                    level: level
+                },
+                function (data) {
+                    var icon = data.code == 1 ? 1 : 0;
+                    var time = data.code == 1 ? 1000 : 3000;
+                    layerMsg(data.message, icon, time, function () {
+                        if (data.code == 1) {
+                            $('#tree_mod_modal').modal('hide');
+                            $(".modal-backdrop").remove();
+                            $('#content').load("/department/");
+                        }
+                    });
+                });
+        } else {
+            $.post("/department/modDepartment",
+                {
+                    departmentId: departmentId,
+                    departmentCode: departmentCode,
+                    departmentName: departmentName,
+                    parentCode: parentCode,
+                    describe: describe,
+                    level: level,
+                    oldDepartmentCode: oldDepartmentCode
+                },
+                function (data) {
+                    var icon = data.code == 1 ? 1 : 0;
+                    var time = data.code == 1 ? 1000 : 3000;
+                    layerMsg(data.message, icon, time, function () {
+                        if (data.code == 1) {
+                            $('#tree_mod_modal').modal('hide');
+                            $(".modal-backdrop").remove();
+                            $('#content').load("/department/");
+                        }
+                    });
+                });
+        }
+    }
+</script>

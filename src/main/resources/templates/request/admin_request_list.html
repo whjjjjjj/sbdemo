@@ -1,0 +1,32 @@
+#if(page)
+#for(x:page.getList())
+<tr>
+    <td><span class="text-ellipsis">#(x.document_name??'')</span></td>
+    <td><span class="text-ellipsis">#(x.document_type??'')</span></td>
+    <td><span class="text-ellipsis">#(x.document_size??'')</span></td>
+    #set(permission = x.document_permission == 1 ? '公开' : x.document_permission == 2 ? '申请查看' : '不公开')
+    <td><span class="text-ellipsis">#(permission)</span></td>
+    <td><span class="text-ellipsis">#(x.request_remarks??'')</span></td>
+    <td><span class="text-ellipsis" title="#(x.request_time == null ? '' : longToStringDate(x.request_time))">#(x.request_time == null ? '' : longToStringDate(x.request_time))</span></td>
+    <td><span class="text-ellipsis" title="#(x.examine_time == null ? '' : longToStringDate(x.examine_time))">#(x.examine_time == null ? '' : longToStringDate(x.examine_time))</span></td>
+    <td><span class="text-ellipsis">#(x.examine_remarks??'')</span></td>
+    <td><span class="text-ellipsis">#(x.examine_status == 2? '待审核' : x.examine_status == 1 ? '审核通过' : '审核不通过')</span></td>
+
+    <td>
+        #if(x.examine_status == 2)
+        <button class="bg-empty btn text-info" onclick="examineRequest('#(x.request_id)')">审核</button>
+        #end
+    </td>
+</tr>
+#end
+#end
+<input type="hidden" name="page-number" value="#(page.pageNumber??0)">
+<input type="hidden" name="page-size" value="#(page.pageSize??0)">
+<input type="hidden" name="page-row" value="#(page.totalRow??0)">
+<input type="hidden" name="page-total" value="#(page.totalPage??0)">
+
+<script>
+    function examineRequest(requestId) {
+        $('#examineRequest').load('/request/examineView', {requestId : requestId});
+    }
+</script>

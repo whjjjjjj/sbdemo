@@ -1,0 +1,122 @@
+.w-login-body{
+    width: 100%;
+    height: 100%;
+    height: 100vh;
+    min-width: 1200px;
+    min-height: 514px;
+    background-image: url('/framework/images/login/bg.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.w-login-box{
+    width: 1010px;
+    height: 514px;
+    background-image: url('/framework/images/login/bg3.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 2;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-top: -257px;
+    margin-left: -505px;
+}
+.w-login-title{
+    font-size: 26px;
+    margin: 0;
+    color: #38a1fd;
+    letter-spacing: 5px;
+    text-align: center;
+}
+.w-login-panle{
+    padding-top: 93px;
+    padding-left: 592px;
+    width: 340px;
+    box-sizing: content-box;
+}
+.w-login-input-box{
+    border:1px solid #808080;
+    padding: 0 46px;
+    height: 46px;
+    margin-top: 30px;
+    border-radius: 46px;
+    background-position: 21px center;
+    background-repeat: no-repeat;
+    transition: all 0.5s ease-in;
+}
+.w-login-input-box.active{
+    border:1px solid #38a1fd;
+}
+.w-login-input{
+    width: 100%;
+    border:0px;
+    height: 44px;
+    outline: none;
+    padding: 0px;
+}
+.w-login-input-box.type-account{
+    background-image: url('/framework/images/login/user.png');
+}
+.w-login-input-box.type-password{
+    background-image: url('/framework/images/login/password.png');
+}
+.w-login-input-box.active.type-account{
+    background-image: url('/framework/images/login/user2.png');
+}
+.w-login-input-box.active.type-password{
+    background-image: url('/framework/images/login/password2.png');
+}
+.w-login-bt-body{
+    margin-top: 20px;
+}
+.w-login-bt-btn{
+    background: #38a1fd;
+    color: #fff;
+    text-align: center;
+    border:0px;
+    width: 211px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 36px;
+    cursor: pointer;
+    float: left;
+    outline: none;
+}
+.w-login-bt-a{
+    float: right;
+    color: #38a1fd;
+    font-size: 16px;
+    line-height: 36px;
+}
+.w-other-login-title-body{
+    height: 24px;
+    line-height: 24px;
+    color: #cccccc;
+    text-align: center;
+    margin: 18px 0;
+    background-image: url('/framework/images/login/bar.png');
+    background-position: center center;
+    background-repeat: repeat-x;
+}
+.w-other-login-title-box{
+    background-color: #fff;
+    width: 106px;
+    margin: 0 auto;
+}
+.w-other-login-btn{
+    color: #fff;
+    display: block;
+    height: 46px;
+    background: #38a1fd;
+    border-radius: 46px;
+    line-height: 46px;
+    text-align: center;
+}
+.w-other-login-text{
+    padding-left: 22px;
+    line-height: 16px;
+    background-image: url('/framework/images/login/identity.png');
+    background-position: left center;
+    background-repeat: no-repeat;
+}

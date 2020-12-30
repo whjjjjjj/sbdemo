@@ -1,0 +1,86 @@
+<section class="scrollable padder-lg w-f-md full-height animated fadeIn">
+    <!--标题以及头部 begin-->
+    <h3 class="papeTitle hide">用户管理</h3>
+    <!--标题以及头部 end-->
+
+    <div class="col-lg-2">
+        <section class="panel panel-default m-t-md common_shadow_panel">
+
+        <div id="treeview1" class="test treeview">
+
+        </div>
+            <div class="row wrapper" id="frm-search" style="visibility:hidden;height: 10px">
+                <div class="pull-left col-sm-1">
+                    <div class="input-group w-m-t-min4">
+                        <input class="form-control" placeholder="输入内容" type="text" name="departmentId">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id="btn-search">查询</button>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--申请列表 begin-->
+    <div class="col-lg-10">
+    <section class="panel panel-default m-t-md common_shadow_panel">
+        <div class="statistics-header type_newui">
+            <span class="w_header_title">用户管理</span>
+            <div class="col-sm-1 pull-right">
+                <button class="btn btn-success btn-circle btn-lg" type="button" style="background-color: #0d8ddb;border-color: #0d8ddb"
+                        onclick="addUser()"><i class="fa fa-plus"></i></button>
+            </div>
+        </div>
+
+        <!--表格-->
+        <div class="table-responsive w_bmlb_r_table_body">
+            <table class="table table-striped table-style b-t b-light w_bmlb_r_table table-layout-fixed">
+                <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>姓名</th>
+                    <th>手机号码</th>
+                    <th>所属部门</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="list">
+                </tbody>
+            </table>
+        </div>
+
+        <!--分页-->
+        <footer class="panel-footer w_newui_panel_footer">
+            <div class="row">
+                <div class="col-sm-12 text-right text-center-xs" id="kkpager"></div>
+            </div>
+        </footer>
+    </section>
+    </div>
+    <!--申请列表 end-->
+</section>
+
+<div id="modUser"></div>
+<script>
+    var page;
+    $(function () {
+        page = kkpageInit('#kkpager', '#list', '/user/userList');
+        searchInit('#btn-search', '#frm-search', '#list', '#kkpager');
+
+        var e = #(treeDepartment)
+
+        $("#treeview1").treeview({data: e});
+    });
+
+    function itemOnclick(target){
+
+        var nodeid = $(target).attr('tagId')
+        $('input[name=departmentId]').val(nodeid);
+        $('#btn-search').click();
+    }
+
+    function addUser() {
+        $('#modUser').load('/user/add');
+    }
+</script>

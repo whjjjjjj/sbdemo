@@ -1,0 +1,76 @@
+#if(page)
+#for(x:page.getList())
+<tr>
+    <td><span class="text-ellipsis">#(x.user_username??'')</span></td>
+    <td><span class="text-ellipsis">#(x.user_name??'')</span></td>
+    <td><span class="text-ellipsis">#(x.user_telephone??'')</span></td>
+    <td><span class="text-ellipsis">#(x.department_name??'')</span></td>
+    <td>
+        <button class="bg-empty btn text-info" onclick="stopUser('#(x.user_id)')">禁用账户</button>
+        <button class="bg-empty btn text-info" onclick="resetPwd('#(x.user_id)')">重置密码</button>
+        <button class="bg-empty btn text-info" onclick="modDepartment('#(x.user_id)')">修改部门</button>
+        #if( x.role_id != 1L )
+        <button class="bg-empty btn text-info" onclick="setAdmin('#(x.user_id)')">设置为管理员</button>
+        #end
+    </td>
+</tr>
+#end
+#end
+<input type="hidden" name="page-number" value="#(page.pageNumber??0)">
+<input type="hidden" name="page-size" value="#(page.pageSize??0)">
+<input type="hidden" name="page-row" value="#(page.totalRow??0)">
+<input type="hidden" name="page-total" value="#(page.totalPage??0)">
+
+<script>
+    function stopUser(userId) {
+        layer.confirm('您确定要禁用账号吗？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.post("/user/stopUser", {userId: userId}, function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (icon == 1) {
+                        page.refresh();
+                    }
+                });
+            });
+        });
+    }
+
+    function resetPwd(userId) {
+        layer.confirm('您确定要重置密码吗？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.post("/user/resetPwd", {userId: userId}, function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (icon == 1) {
+                        page.refresh();
+                    }
+                });
+            });
+        });
+    }
+
+    function setAdmin(userId) {
+        layer.confirm('您确认要设置为管理员吗？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.post("/user/setAdmin", {userId: userId}, function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (icon == 1) {
+                        page.refresh();
+                    }
+                });
+            });
+        });
+    }
+
+    function modDepartment(userId) {
+        $('#modUser').load('/user/mod', {userId: userId});
+    }
+</script>

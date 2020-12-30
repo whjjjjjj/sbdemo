@@ -1,0 +1,24 @@
+2020-11-23 14:38:11.709 [http-nio-8088-exec-3] INFO  admin - 之前执行
+2020-11-23 14:38:11.712 [http-nio-8088-exec-3] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:11.712 [http-nio-8088-exec-3] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1
+2020-11-23 14:38:18.702 [http-nio-8088-exec-4] INFO  admin - 之前执行
+2020-11-23 14:38:18.703 [http-nio-8088-exec-4] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:18.703 [http-nio-8088-exec-4] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1
+2020-11-23 14:38:20.568 [http-nio-8088-exec-6] INFO  admin - 之前执行
+2020-11-23 14:38:20.569 [http-nio-8088-exec-6] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:20.570 [http-nio-8088-exec-6] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1
+2020-11-23 14:38:21.677 [http-nio-8088-exec-7] INFO  admin - 之前执行
+2020-11-23 14:38:21.678 [http-nio-8088-exec-7] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:21.678 [http-nio-8088-exec-7] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1
+2020-11-23 14:38:22.696 [http-nio-8088-exec-8] INFO  admin - 之前执行
+2020-11-23 14:38:22.697 [http-nio-8088-exec-8] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:22.697 [http-nio-8088-exec-8] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1
+2020-11-23 14:38:23.419 [http-nio-8088-exec-9] INFO  admin - 之前执行
+2020-11-23 14:38:23.420 [http-nio-8088-exec-9] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:23.420 [http-nio-8088-exec-9] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1
+2020-11-23 14:38:31.028 [http-nio-8088-exec-1] INFO  admin - 之前执行
+2020-11-23 14:38:31.030 [http-nio-8088-exec-1] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:31.030 [http-nio-8088-exec-1] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1
+2020-11-23 14:38:32.928 [http-nio-8088-exec-2] INFO  admin - 之前执行
+2020-11-23 14:38:32.929 [http-nio-8088-exec-2] INFO  admin - 即将执行方法为: getTotalUser，属于com.example.sbdemo.controller.TestController包
+2020-11-23 14:38:32.929 [http-nio-8088-exec-2] INFO  admin - 用户请求的url为：http://localhost:8088/user，ip地址为：0:0:0:0:0:0:0:1

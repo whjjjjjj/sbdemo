@@ -1,0 +1,81 @@
+<!--修改弹框begin-->
+<div class="modal fade" id="user_mod_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="close-modal-icon"></i>
+                </button>
+                <h5 class="modal-title">修改用户部门</h5>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">部门名称：</label>
+                        <div class="col-sm-5 no-padder">
+                            <input type="hidden" id="userId" value="#(userId??0)">
+                            <textarea id="department" class="form-control uneditable-textarea" style="background-color: #fff"  type="text" readonly></textarea>
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" onclick="modUser()">确认</button>
+                <button type="button" class="btn btn-outline-info m-r-md" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--"修改"弹框end-->
+
+
+<script>
+    /*节点列表（这里演示的是非异步方式的实现）*/
+    var zNodes = #(list);
+    var defaults = {
+        textLabel: "jasontext",
+        zNodes: zNodes,
+        height:333,
+        chkStyle: "radio"
+    }
+    $(document).keydown(function(event){
+        if (event.keyCode == 13) {
+            $('form').each(function() {
+                event.preventDefault();
+            });
+        }
+    });
+    /*注册下拉树方法也很简单*/
+    $(document).ready(function () {
+        $('#department').attr("checks", '#(departmentCode)');
+        $("textarea").drawMultipleTree(defaults);
+        $('.menuContent').css("width", "100%");
+        $('.searchInput').css('width', "100%");
+        $('#user_mod_modal').modal('show');
+    });
+    //-->
+
+
+    function modUser() {
+        var departmentId = $('#departmentId').val();
+        var userId = $('#userId').val();
+        $.post("/user/updateUser",
+            {
+                type : 'mod',
+                departmentId: departmentId,
+                userId : userId
+            },
+            function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                        $('#user_mod_modal').modal('hide');
+                        $(".modal-backdrop").remove();
+                        $('#content').load("/user");
+                    }
+                });
+            });
+    }
+</script>

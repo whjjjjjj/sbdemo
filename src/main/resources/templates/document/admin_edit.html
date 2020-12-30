@@ -1,0 +1,251 @@
+<!--审批弹框begin-->
+<div class="modal fade" id="examine_mod_modal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="close-modal-icon"></i>
+                </button>
+                <h5 class="modal-title">上传新文件</h5>
+            </div>
+            <div class="modal-body col-lg-6" style="margin:0 auto">
+<!--                <div class="form-group" style="text-align: center">-->
+<!--                    <button type="button" class="btn btn-outline-info m-r-md" id="btn-upload" onclick=""-->
+<!--                            style="color: white!important;background-color: deepskyblue">-->
+<!--                        <i class="glyphicon glyphicon-open" aria-hidden="true"></i>上传文件-->
+<!--                    </button>-->
+<!--                    <input type="file" class="hide" id="upload-file">-->
+<!--                </div>-->
+
+                <div id="drag-drop-area"></div>
+                <div id="display">
+
+                </div>
+            </div>
+            <div class="modal-body col-lg-6">
+                <form class="form-horizontal">
+                    <input class="form-control input-sm" type="hidden" id="documentId" name="documentId"/>
+                    <input class="form-control input-sm" type="hidden" id="documentType" name="documentType"/>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left;padding-left: 0px">文件权限：</label>
+                        <br>
+                        <div class="col-sm-12 no-padder">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="radio-inline i-checks"><label><input type="radio" name="choose" value="1"/><i></i>公开</label></div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="radio-inline i-checks"><label><input type="radio" name="choose" value="0"/><i></i>不公开</label></div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="radio-inline i-checks"><label><input type="radio" name="choose" value="2"/><i></i>申请查看</label></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: left;padding-left: 0px">自定义文件名：</label>
+                        <br>
+                        <div class="col-sm-12 no-padder">
+                            <input class="form-control input-sm" type="text" id="examineRemark" name="examineRemark"/>
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="text-align: center">
+<!--                        <button type="button" class="btn btn-primary btn-info"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i>更改</button>-->
+                        <a onclick="toChange()"><i class="fa fa-check fa-lg"></i>更改</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-info m-r-md" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info" onclick="toSave()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(function () {
+       $('#examine_mod_modal').modal('show');
+    });
+
+    var uppy = Uppy.Core().use(Uppy.Dashboard, {
+        inline: true,
+        target: '#drag-drop-area'
+    }).use(Uppy.Tus, {
+        endpoint: 'http://192.168.1.136:8080/group1/big/upload/'
+    })
+    uppy.on('complete', (result) => {
+
+        var isSuccess = false;
+        var list = [];
+        if (result.successful.length != 0) {
+            var lists = result.successful;
+            for (let i in lists) {
+                var map = {};
+                map['uploadUrl'] = lists[i].tus.uploadUrl;
+                map['extension'] = lists[i].extension;
+                list.push(map);
+            }
+            isSuccess = true;
+        }
+
+        $.post("/document/getUploadRecord",
+            {
+                isSuccess : isSuccess,
+                result : JSON.stringify(list)
+            },
+            function (data) {
+                if (data.code == 0) {
+                    layerMsg(data.message, 2, 3000);
+                } else {
+                        $('#drag-drop-area').remove();
+                        let list = JSON.parse(data.list);
+                        console.log(list)
+                        let b ;
+                        for (const l of list) {
+                            b=    '<div name="fileList" id="' + l.document_id + '" permission="' + l.document_permission + '">' +
+                                '<div class="col-lg-9" style="margin-top: 10px;">' +
+                                '<a id= "a' + l.document_id + '" onclick="clickFile(' + l.document_id + ',\'' + l.document_type + '\')">' +
+                                '<i class="glyphicon glyphicon-link"></i>&nbsp;&nbsp;&nbsp;<span id="name' + l.document_id + '">' + l.document_name +'</span>.' + l.document_type +
+                                '</a>' +
+                                '<a onclick="deleteFile(' + l.document_id + ')"><i class="glyphicon glyphicon-remove" style="float:right" ></i></a>' +
+                                '</div>' +
+                                '<div class="col-lg-2"></div>' +
+                                '</div>'
+                            $('#display').append(b);
+                        }
+                    layerMsg(data.message, 1, 1000, function () {
+                    });
+                }
+            });
+        console.log(result);
+        console.log('Upload complete! We’ve uploaded these files:', result.successful)
+    })
+    uppy.setMeta({ auth_token: true, path: 'unit_document'})//这里是传递上传的认证参数,callback_url参数中 id为文件的ID,info 文转的基本信息json
+
+    //文件上传
+    $('#btn-upload').on('click', function () {
+        $('#upload-file').click()
+    });
+
+    uploadExcel({
+        url: '/document/upload'
+        , file: '#upload-file'
+        , success: function (data) {
+            layer.closeAll()
+            if (data.code == 0) {
+                layerMsg(data.message, 2, 3000);
+            } else {
+                layerMsg(data.message, 1, 1000, function () {
+                    let list = JSON.parse(data.list);
+                    console.log(list)
+                    let b ;
+                    for (const l of list) {
+                      b=    '<div name="fileList" id="' + l.document_id + '" permission="' + l.document_permission + '">' +
+                            '<div class="col-lg-3"></div>' +
+                            '<div class="col-lg-7" style="margin-top: 10px;">' +
+                                '<a id= "a' + l.document_id + '" onclick="clickFile(' + l.document_id + ',' + l.document_type + ')">' +
+                                    '<i class="glyphicon glyphicon-link"></i>&nbsp;&nbsp;&nbsp;<span id="name' + l.document_id + '">' + l.document_name +'</span>.' + l.document_type +
+                                '</a>' +
+                                '<a onclick="deleteFile(' + l.document_id + ')"><i class="glyphicon glyphicon-remove" style="float:right" ></i></a>' +
+                            '</div>' +
+                            '<div class="col-lg-2"></div>' +
+                            '</div>'
+                        $('#display').append(b);
+                    }
+                });
+            }
+        }
+    });
+
+    function clickFile(id, type) {
+        let documentId = $('#documentId').val();
+
+        if (documentId != 0) {
+            $('#a' + documentId).removeAttr("style");
+        }
+
+        $('#a' + id).attr("style", "color:blue");
+        let permission = $('#'+ id).attr("permission");
+        $(':radio[name=choose][value=' + permission + ']').prop('checked',"checked");
+        $('#documentType').val(type);
+        $('#documentId').val(id);
+    }
+
+    function deleteFile(id) {
+        // layer.confirm('您确定要删除此条记录吗？', {
+        //     btn: ['确定', '取消']
+        // }, function () {
+            $.post("/document/delete", {id: id}, function (data) {
+                let icon = data.code == 1 ? 1 : 0;
+                let time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                        $('#' +id).remove();
+                    }
+                });
+            });
+        // });
+    }
+
+    /**
+     * 单文件更改
+     */
+    function toChange() {
+
+        let documentId = $('#documentId').val()
+        let permission = $(':radio[name="choose"]:checked').val()
+        let name = $('#examineRemark').val()
+        let type = $('#documentType').val()
+        $.post("/document/change",
+            {
+                id: documentId,
+                permission: permission,
+                name: name,
+                type: type
+            },
+            function (data) {
+                let icon = data.code == 1 ? 1 : 0;
+                let time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                       $('#' + documentId).attr("permission", permission);
+                       if(name != '') {
+                           $('#name' + documentId).html(name);
+                       }
+                       $('#examineRemark').val('');
+                    }
+                });
+            });
+    }
+
+    /**
+     * 保存
+     */
+    function toSave() {
+        let ids = "";
+        $("div[name='fileList']").each(function(){
+            ids += $(this).attr("id") + "," ;
+        });
+        if (ids.length > 0) {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $.post("/document/save",
+            {
+                ids: ids
+            },
+            function (data) {
+                let icon = data.code == 1 ? 1 : 0;
+                let time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                        $('#examine_mod_modal').modal('hide');
+                        $(".modal-backdrop").remove();
+                        page.refresh();
+                    }
+                });
+            });
+    }
+</script>

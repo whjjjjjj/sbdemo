@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+    <meta charset="utf-8"/>
+    <title>用户登录</title>
+    <meta name="keywords" content="单位文档"/>
+    <meta name="description" content="单位文档"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <link rel="stylesheet" href="/framework/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="/framework/css/animate.css" type="text/css"/>
+    <link rel="stylesheet" href="/framework/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/framework/css/page.css" type="text/css"/>
+    <!-- 登录样式 -->
+    <link rel="stylesheet" href="/framework/css/login.css" type="text/css"/>
+</head>
+<body class="mini-navbar">
+<div class="full-height">
+    <!-- 登录页面开始 -->
+    <div class="w-login-body">
+        <div class="w-login-box">
+            <div class="w-login-panle">
+                <h5 class="w-login-title">用户登录</h5>
+
+                <form action="/login" method="post">
+                    <div class="w-login-input-box type-account">
+                        <input class="w-login-input" type="text" name="username" placeholder="请输入账号" autocomplete="off"/>
+                    </div>
+                    <div class="w-login-input-box type-password">
+                        <input class="w-login-input" type="password" name="password" placeholder="请输入密码" autocomplete="off"/>
+                    </div>
+                    <div class="w-login-bt-body clearfix">
+                        <button class="w-login-bt-btn" type="submit">登录</button>
+<!--                        <a class="w-login-bt-a" href="javascript:void(0)">忘记密码？</a>-->
+                    </div>
+                </form>
+<!--                <div>-->
+<!--                    <div class="w-other-login-title-body">-->
+<!--                        <div class="w-other-login-title-box">其他登录方式</div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <a href="/casLogin" class="w-other-login-btn">-->
+<!--                            <span class="w-other-login-text">统一身份认证</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+    <!-- 登录页面结束 -->
+</div>
+<!--全局-->
+<script src="/framework/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="/framework/js/jquery/jquery.form.js"></script>
+<script src="/framework/js/jquery/jquery.md5.js"></script>
+
+<script src="/framework/js/bootstrap.js"></script>
+
+<!-- App -->
+<!--<script src="/framework/js/global.js"></script>-->
+<script src="/framework/js/common/common.js"></script>
+<script src="/framework/js/common/common.layer.js"></script>
+<script src="/framework/js/common/common.form.js"></script>
+
+<!--layer-->
+<script src="/framework/plugin/layer/layer.min.js"></script>
+
+<script>
+    $(function () {
+        var $frm = $('form');
+        $frm.ajaxForm({
+            dataType: "json",
+            beforeSerialize: function () {
+                var username = $('[name=username]').val() || '', password = $frm.find(':password').val() || '';
+                if (username == '') {
+                    layerTip('账号或手机号不得为空！' + username);
+                    $frm.find(':text').focus();
+                    return false;
+                }
+
+                if (password == '') {
+                    layerTip('密码不得为空！');
+                    $frm.find(':password').focus();
+                    return false;
+                }
+
+                //加密
+                $frm.find(':password').each(function () {
+                    var $this = $(this);
+                    $this.val($.md5($this.val()));
+                });
+            },
+            success: function (data) {
+                commonResult(data, {
+                    fail: function () {
+                        $frm.find(':password').val('').focus();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

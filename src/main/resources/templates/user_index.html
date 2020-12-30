@@ -1,0 +1,101 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content" style="background-color: #f2f4f8;padding: 155px 20px 20px">
+                <div class="search-result">
+
+                <div class="col-sm-1">
+
+                           </div>
+                           <div class="col-sm-9">
+                               <input type="text" style="width: 100%;" placeholder="输入内容" id="neirong" class="form-control input-s-lg">
+
+                           </div>
+                           <div class="col-sm-1">
+
+                           </div>
+                           <div class="col-sm-2">
+                               <button class="btn btn-s-lg btn-group" style="background-color: #9f9fa5" id="search">
+                                   搜索
+                               </button>
+                           </div>
+                            <div class="input-group-btn">
+
+                            </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="hr-line-dashed"></div>
+
+
+                <div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-1" style="float: left">
+                        检索历史
+                    </div>
+                    <div class="col-sm-7"></div>
+                    <div class="col-sm-1">
+                        <a style="float:right;" onclick="clearStorage()"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i>清空</a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div>
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-9" style="height: 200px;">
+                        <div style="padding: 20px 10px 10px" >
+                            <ul class="tag-list" style="padding: 0" id="history">
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    var list ;
+    $(function () {
+        $('#history').empty();
+        $('#history').each(function () {
+            var lists = JSON.parse(localStorage.getItem('history')) || []
+
+            for(let [index,l] of lists.entries()) {
+                var _a =  $("<li><a onclick=choose('" + l + "')>"+l+"</a></li>");
+                $(this).append(_a);
+            }
+        });
+    })
+
+    function choose(name) {
+        $('#neirong').val(name);
+        $('#search').click();
+    }
+
+
+    $('#search').on('click',function () {
+        var content = $('#neirong').val();
+        if (localStorage.getItem('history') == null) {
+            list = [];
+        } else {
+            list = JSON.parse(localStorage.getItem('history')) || []
+        }
+        if (!list.includes(content)) {
+            list.push(content);
+        }
+        localStorage.setItem('history', JSON.stringify(list));
+
+        $('#content').load('/document/userDocumentView', {searchKey : content});
+        $('#li1').removeAttr("class");
+        $('#li2').attr('class','active');
+    })
+
+    function clearStorage() {
+        localStorage.clear();
+        $('#content').load('/userIndex');
+    }
+</script>

@@ -1,0 +1,263 @@
+<section class="padder-lg w-f-md full-height animated fadeIn">
+    <!--标题以及头部 begin-->
+    <h3 class="papeTitle hide">部门列表</h3>
+    <!--标题以及头部 end-->
+    <!--申请列表 begin-->
+    <section class="panel panel-default m-t-md common_shadow_panel" style="height: calc(100% - 75px);">
+        <div class="statistics-header type_newui">
+            <span class="w_header_title">部门列表</span>
+        </div>
+
+        <!--表格-->
+        <div class="table-responsive w_bmlb_r_table_body" style="height: calc(100% - 70px);">
+            <div id="list" class="full-height">
+                <div class="row wrapper wrapper-content animated fadeInRight full-height">
+                    <div class="col-sm-6 full-height scrollable" style="float: left;border: 1px solid">
+                        <div id="treeview1" class="test treeview">
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 full-height scrollable">
+                        <div>
+                            <h3>部门信息:</h3>
+
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label col-sm-offset-2">部门名称：</label>
+
+                                    <div class="col-sm-5 no-padder">
+                                        <input class="form-control input-sm" type="text" id="departmentName"/>
+                                        <input type="hidden" id="departmentId"/>
+                                        <input type="hidden" id="level"/>
+                                        <div class="addError addError-danger"><i></i></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label col-sm-offset-2">部门代码：</label>
+
+                                    <div class="col-sm-5 no-padder">
+                                        <input class="form-control input-sm" type="text" id="departmentCode"/>
+                                        <input type="hidden" id="oldDepartmentCode">
+                                        <div class="addError addError-danger"><i></i></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label col-sm-offset-2">父级部门代码：</label>
+
+                                    <div class="col-sm-5 no-padder">
+                                        <input class="form-control input-sm" type="text" id="fatherCode"
+                                               readonly="readonly"/>
+
+                                        <div class="addError addError-danger"><i></i></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label col-sm-offset-2">其他描述：</label>
+
+                                    <div class="col-sm-5 no-padder">
+                                        <input class="form-control input-sm" type="text" id="describe"/>
+
+                                        <div class="addError addError-danger"><i></i></div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" onclick="toModDictionaryTreePoint()">确认</button>
+<!--                                <button type="button" class="btn btn-outline-info m-r-md" onclick="clearDictionaryItem()">清空</button>-->
+                            </div>
+                        </div>
+                        <div id="dictionaryItem" style="display: none;"></div>
+                        <div id="child" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--申请列表 end-->
+</section>
+#include("management.html")
+<script>
+
+    $(function () {
+        var e = #(treeDepartment)
+
+        $("#treeview1").treeview({data: e});
+    });
+
+    function itemOnclick(target){
+
+        var nodeid = $(target).attr('tagId')
+        $.post("/department/findOne",
+            {
+                departmentId : nodeid
+            },
+            function (data) {
+                document.getElementById('dictionaryItem').style.display = "block";
+                document.getElementById('child').style.display = "block";
+                $('#childItem').remove();
+                var name = data.department_name;
+                var departmentId = data.department_id;
+                var code = data.department_code;
+                var fatherCode = data.parent_code;
+                var describe= data.describe == null ? '' : data.describe;
+                var level = data.level;
+                $('#departmentId').val(departmentId);
+                $('#departmentCode').val(code);
+                $('#oldDepartmentCode').val(code);
+                $('#departmentName').val(name);
+                $('#fatherCode').val(fatherCode);
+                $('#describe').val(describe);
+                $('#level').val(level);
+                var child = document.getElementById('child');
+                var item = '<ul class="list-group">\n';
+                var body = '';
+                if (fatherCode == '0') {
+                    body = '<li class="list-group-item node-treeview1">' +
+                        '<span class="icon"><i class="glyphicon glyphicon-tags">' + name + '</i></span>\n' +
+                        '<div class="pull-right" >\n' +
+                        // '<button class="bg-empty btn text-info glyphicon glyphicon-pencil" title="修改" onclick="modDictionary(' + departmentId + ',\'' + code + '\',\'' + name + '\',' + fatherCode + ',\'' + describe +'\')"></button>\n' +
+                        // '<button class="bg-empty btn text-info glyphicon glyphicon-trash" title="删除" onclick="delDictionary(' + departmentId + ')"></button>\n' +
+                        // '<button class="bg-empty btn text-info glyphicon glyphicon-plus" title="增加同级部门" onclick="addLevelDictionary(\'' + fatherCode + '\')"></button>\n' +
+                        '<button class="bg-empty btn text-info glyphicon glyphicon-plus-sign" title="增加子级部门" onclick="addLevelDictionary(' + code + ',' + level + ')"></button>\n'
+                    '</div>' +
+                    '</li>';
+                } else {
+                    body = '<li class="list-group-item node-treeview1">' +
+                        '<span class="icon"><i class="glyphicon glyphicon-tags">' + name + '</i></span>\n' +
+                        '<div class="pull-right" >\n' +
+                        '<button class="bg-empty btn text-info glyphicon glyphicon-trash" title="删除" onclick="delDictionary(' + departmentId + ')"></button>\n' +
+                        '<button class="bg-empty btn text-info glyphicon glyphicon-plus" title="增加同级部门" onclick="addLevelDictionary(\'' + fatherCode + '\',' + level +  ',\'parallel\')"></button>\n' +
+                        '<button class="bg-empty btn text-info glyphicon glyphicon-plus-sign" title="增加子级部门" onclick="addLevelDictionary(\'' + code + '\',' + level + ',\'child\')"></button>\n'
+                    '</div>' +
+                    '</li>';
+                }
+
+                #for(l : allList)
+                if(code == '#(l.parent_code??)') {
+                    body = body + '<li class="list-group-item node-treeview1">' +
+                        '<span class="indent"></span>\n' +
+                        '<span class="icon"><i class="glyphicon glyphicon-tags">#(l.department_name??)</i></span>\n' +
+                        '<div class="pull-right" >\n' +
+                        '<button class="bg-empty btn text-info glyphicon glyphicon-pencil" title="修改" onclick="modDictionary(#(l.department_id??), \'#(l.department_code??)\',\'#(l.department_name??)\', \'#(l.parent_code)\', \'#(l.describe??)\', #(l.level))"></button>\n' +
+                        '<button class="bg-empty btn text-info glyphicon glyphicon-trash" title="删除" onclick="delDictionary(' + #(l.department_id ??) + ')"></button>\n' +
+                        '</div>' +
+                        '</li>';
+                }
+                #end
+                item = item + body + '</ul>';
+                var div = document.createElement("div");
+                div.setAttribute('id', 'childItem');
+                div.setAttribute('class', 'clearfix row m-b-sm');
+                div.innerHTML = item;
+                child.appendChild(div);
+            });
+
+
+
+    }
+    /**
+     * 删除部门
+     **/
+    function delDictionary(departmentId) {
+        layer.confirm('您确定要删除此部门及其所有子部门吗？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.post("/department/delDepartment", {
+                departmentId: departmentId,
+            }, function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                        $('#content').load("/department/");
+                    }
+                });
+            });
+        });
+    }
+
+    /**
+     * 弹出修改部门弹框
+     **/
+    function modDictionary(id, code, name, fatherCode, describe, level) {
+        $('#tree_mod_modal').modal('show');
+        $('#dictionary_mod_department_id').val(id);
+        $('#dictionary_mod_code').val(code);
+        $('#dictionary_mod_name').val(name);
+        $('#dictionary_mod_father_code').val(fatherCode);
+        $('#dictionary_mod_oldDepartmentCode').val(code);
+        $('#dictionary_mod_other').val(describe);
+        $('#dictionary_mod_level').val(level);
+        // $('#dictionary_mod_code').attr("readonly","readonly");
+
+    }
+
+    /**
+     * 增加同级
+     */
+
+    function addLevelDictionary(code, level, type) {
+        $('#tree_mod_modal').modal('show');
+        $('.modal-title').text('增加');
+        $('#departmentId').val('');
+        $('#dictionary_mod_code').val('');
+        $('#dictionary_mod_name').val('');
+        $('#dictionary_mod_father_code').val(code);
+        if (type == 'child') {
+            $("#dictionary_mod_level").val(level + 1);
+        } else {
+            $("#dictionary_mod_level").val(level);
+        }
+        $('#dictionary_mod_other').val('');
+    }
+
+    /**
+     *清空点击所展示的部门
+     */
+    function clearDictionaryItem() {
+        $('#departmentId').val('');
+        $('#departmentName').val('');
+        $('#departmentCode').val('');
+        $('#fatherCode').val('');
+        $('#describe').val('');
+        $('#level').val('');
+        $('#oldDepartmentCode').val('');
+    }
+    /**
+     *修改点击所展示部门
+     */
+    function toModDictionaryTreePoint() {
+        var departmentId = $('#departmentId').val();
+        var departmentCode = $('#departmentCode').val();
+        var departmentName = $('#departmentName').val();
+        var parentCode = $('#fatherCode').val();
+        var describe = $('#describe').val();
+        var level = $('#level').val();
+        var oldDepartmentCode = $('#oldDepartmentCode').val();
+        $.post("/department/modDepartment",
+            {
+                departmentId: departmentId,
+                departmentCode: departmentCode,
+                departmentName: departmentName,
+                parentCode: parentCode,
+                describe : describe,
+                level : level,
+                oldDepartmentCode: oldDepartmentCode
+            },
+            function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                        $('#content').load("/department");
+                    }
+                });
+            });
+    }
+
+</script>

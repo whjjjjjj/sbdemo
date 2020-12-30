@@ -1,0 +1,39 @@
+.w_bmlb_r_table .text-ellipsis {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file_table > tr {
+    text-align: center;
+}
+
+.file_table > tr > th, .file_table > tr > td {
+    width: calc(50% - 308px);
+}
+
+.file_table > tr > th {
+    text-align: right;
+    width: 300px;
+}
+
+.file_table > tr > td.action {
+    width: 80px;
+}
+
+.border_yellow {
+    border-color: #f8b551 !important;
+}
+
+.border_green {
+    border-color: #11c26d !important;
+}
+
+.border_red {
+    border-color: #f05050 !important;
+}
+
+.border_blue {
+    border-color: #02a2fe !important;
+}

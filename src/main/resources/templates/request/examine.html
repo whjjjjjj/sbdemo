@@ -1,0 +1,68 @@
+<!--审批弹框begin-->
+<div class="modal fade" id="examine_mod_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="close-modal-icon"></i>
+                </button>
+                <h5 class="modal-title">审核</h5>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input class="form-control input-sm" type="hidden" id="requestId" name="requestId" value="#(requestId)"/>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">审核结果：</label>
+                        <div class="col-sm-5 no-padder">
+                            <div class="radio-inline i-checks" style="margin-left: 20px"><label><input type="radio" name="choose" value="1"/><i></i>通过</label></div>
+                            <div class="radio-inline i-checks" style="margin-left: 20px"><label><input type="radio" name="choose" value="0"/><i></i>不通过</label></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">审核备注：</label>
+                        <div class="col-sm-5 no-padder">
+                            <input class="form-control input-sm" type="text" id="examineRemark" name="examineRemark"/>
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-info m-r-md" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info" onclick="examine()">审核</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+       $('#examine_mod_modal').modal('show');
+    });
+    /**
+     * 修改
+     */
+    function examine() {
+        let choose = $(':radio[name="choose"]:checked').val();
+        let examineRemarks = $('#examineRemark').val()
+        $.post("/request/examine",
+            {
+                examineStatus : choose,
+                examineRemarks : examineRemarks,
+                requestId : $('#requestId').val()
+            },
+            function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                        $('#examine_mod_modal').modal('hide');
+                        $(".modal-backdrop").remove();
+                        page.refresh();
+                    }
+                });
+            });
+    }
+</script>

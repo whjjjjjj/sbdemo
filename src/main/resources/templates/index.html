@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+    <meta charset="utf-8"/>
+    <title>单位文档管理系统</title>
+
+    #include("head.html")
+    #@_css()
+
+</head>
+<body class="">
+<div class="full-height">
+    <!--左侧导航 begin-->
+    #include('index.menu.html')
+    <!--左侧导航 end-->
+
+    <!--右边部分 begin-->
+    <div class="page-main">
+        <!--头部 begin-->
+        #include('index.top.html')
+        <!--头部 end-->
+
+        <!--内容区 begin-->
+        <section class="content-main" id="content"></section>
+        <!--内容区 end-->
+    </div>
+    <!--右边部分 end-->
+</div>
+<div id="editPwd"></div>
+
+#@_js()
+
+<script>
+    $(function () {
+
+        #if(user.role_id == 3)
+        $('#content').load('/userIndex')
+        #else
+        $('#content').load('/adminIndex')
+        #end
+        // $('#index-nav .menuItem:first').click();
+    })
+
+    function editPwd(userId) {
+        $('#editPwd').load('/editPwdView',{userId : userId});
+    }
+</script>
+
+</body>
+</html>

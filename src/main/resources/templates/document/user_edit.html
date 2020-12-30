@@ -1,0 +1,60 @@
+<!--审批弹框begin-->
+<div class="modal fade" id="examine_mod_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="close-modal-icon"></i>
+                </button>
+                <h5 class="modal-title">申请查看</h5>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input class="form-control input-sm" type="hidden" id="documentId" name="documentId" value="#(documentId)"/>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label col-sm-offset-2">申请备注：</label>
+                        <div class="col-sm-5 no-padder">
+                            <input class="form-control input-sm" type="text" id="requestRemark" name="requestRemark"/>
+                            <div class="addError addError-danger"><i></i></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-info m-r-md" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info" onclick="toSubmit()">申请</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+       $('#examine_mod_modal').modal('show');
+    });
+    /**
+     * 修改
+     */
+    function toSubmit() {
+        $.post("/request/submit",
+            {
+                documentId : $('#documentId').val(),
+                requestRemark : $('#requestRemark').val(),
+                userId : '#(user.user_id)'
+            },
+            function (data) {
+                var icon = data.code == 1 ? 1 : 0;
+                var time = data.code == 1 ? 1000 : 3000;
+                layerMsg(data.message, icon, time, function () {
+                    if (data.code == 1) {
+                        $('#examine_mod_modal').modal('hide');
+                        $(".modal-backdrop").remove();
+                        $('#content').load('/request/userRequestView');
+                        $('#li2').removeAttr("class");
+                        $('#li3').attr('class','active');
+                    }
+                });
+            });
+    }
+</script>

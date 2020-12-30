@@ -1,0 +1,26 @@
+#if(page)
+#for(x:page.getList())
+<tr>
+    <td><span class="text-ellipsis">#(x.document_name??'')</span></td>
+    <td><span class="text-ellipsis">#(x.document_type??'')</span></td>
+    <td><span class="text-ellipsis">#(x.document_size??'')</span></td>
+    <td><span class="text-ellipsis">#(x.examine_status == 2? '待审核' : x.examine_status == 1 ? '审核通过' : '审核不通过')</span></td>
+
+    <td>
+        #if(x.examine_status == 1)
+        <button class="bg-empty btn text-info" onclick="download('#(x.document_id)')">查看</button>
+        #end
+    </td>
+</tr>
+#end
+#end
+<input type="hidden" name="page-number" value="#(page.pageNumber??0)">
+<input type="hidden" name="page-size" value="#(page.pageSize??0)">
+<input type="hidden" name="page-row" value="#(page.totalRow??0)">
+<input type="hidden" name="page-total" value="#(page.totalPage??0)">
+
+<script>
+    function download(documentId) {
+        window.location.href = '/document/download?documentId=' +documentId;
+    }
+</script>
