@@ -34,4 +34,10 @@ public interface DepartmentMapper {
             "</foreach>" +
             ")</script>")
     int delChild(List<Long> ids);
+
+    @Update("UPDATE department SET parent_code = #{parentCode} WHERE status = 1 AND department_id = #{departmentId}")
+    int updateParentCode(Department department);
+
+    @Update("UPDATE department SET status = #{status} WHERE department_id = #{departmentId}")
+    int updateStatus(Department department);
 }

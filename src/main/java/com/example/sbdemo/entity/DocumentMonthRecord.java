@@ -11,9 +11,9 @@ public class DocumentMonthRecord {
 
     private int month;
 
-    private int upload_sum;
+    private int uploadSum;
 
-    private int read_sum;
+    private int readSum;
 
-    private Long create_time;
+    private Long createTime;
 }

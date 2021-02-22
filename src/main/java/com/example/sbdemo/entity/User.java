@@ -11,10 +11,8 @@ public class User implements Serializable {
 
     private Long userId;
 
-    @NotNull(message = "没有此id")
     private String showId;
     private String userName;
-    @NotEmpty(message = "没有这名字")
     private String userUsername;
     private Long departmentId;
     private String userTelephone;
